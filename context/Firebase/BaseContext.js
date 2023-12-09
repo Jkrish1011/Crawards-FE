@@ -19,9 +19,14 @@ const CommentCrawdProvider = ({children}) => {
     const handleUserAuth = async () => {
         try{
             const userDataResult = await signInWithPopup(auth, provider);
-            // const credential = TwitterAuthProvider.credentialFromResult(userDataResult);
-            console.log(userDataResult.user.displayName);
-            setCurrentUser(userDataResult.user.displayName);
+            const credential = TwitterAuthProvider.credentialFromResult(userDataResult);
+            console.log(userDataResult);
+            console.log(credential);
+            const userDict = {
+                'credential': credential,
+                'dataresult': userDataResult
+            }
+            setCurrentUser(userDict);
         }catch(err){
             console.error(err);
         }

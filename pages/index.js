@@ -24,7 +24,7 @@ export default function Home() {
       themecolor: `text-[#7335c4]`,
       signIn1: `py-32`,
       signInHeading: `text-3xl font-bold text-[#7335c4] mb-2`,
-      signInHeading2: `border-2 border-[#7335c4] rounded-full px-12 py-2 inline-block font-semibold top-10`
+      signInHeading2: `border-2 border-[#7335c4] rounded-full px-12 py-2 inline-block font-semibold top-10 hover:cursor-pointer`
     }
   return (
     <div>
