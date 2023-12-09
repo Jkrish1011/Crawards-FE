@@ -6,98 +6,24 @@ import axios from 'axios';
 const userId = "Christo21068478";
 const url = `https://api.twitter.com/2/users/${userId}/tweets`;
 
-// The code below sets the bearer token from your environment variables
-const bearerToken = `AAAAAAAAAAAAAAAAAAAAAKuarQEAAAAALNNkPst0rg%2Bh6h39JbIzs1%2FDloA%3D2be163MetU2NPSSlvIS8AQtoujT7SfKAepzFdz4i9cNDl606sm`;
 
 export default async function handler(req, res) {
-    let userTweets = [];
-    let params = {
-        "max_results": 100,
-        "tweet.fields": "created_at",
-        "expansions": "author_id"
-    };
+    try{
+    const clientId = 'M1M5R3BMVy13QmpScXkzTUt5OE46MTpjaQ'; // Your Client ID
+    const redirectUri = encodeURIComponent('https://www.example.com');
+    const scope = encodeURIComponent('tweet.read users.read offline.access');
+    const state = 'state'; // Replace with your state
+    const codeChallenge = 'challenge'; // Replace with your code challenge
+    const codeChallengeMethod = 'plain'; // Code challenge method
 
-    const options = {
-        headers: {
-            "User-Agent": "v2UserTweetsJS",
-            "Authorization": `Bearer ${bearerToken}`
-        }
-    };
-
-    let hasNextPage = true;
-    let nextToken = null;
-    let userName;
-    console.log("Retrieving Tweets...");
-
-    while (hasNextPage) {
-        let resp = await getPage(params, options, nextToken);
-        if (resp && resp.meta && resp.meta.result_count && resp.meta.result_count > 0) {
-            userName = resp.includes.users[0].username;
-            if (resp.data) {
-                userTweets.push.apply(userTweets, resp.data);
-            }
-            if (resp.meta.next_token) {
-                nextToken = resp.meta.next_token;
-            } else {
-                hasNextPage = false;
-            }
-        } else {
-            hasNextPage = false;
-        }
+    const authUrl = `https://twitter.com/i/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=${codeChallengeMethod}`;
+    
+    return "";
+    } catch (error) {
+        console.error('Error making request:', error);
+        throw error;
     }
-
-    console.dir(userTweets, {
-        depth: null
-    });
-    console.log(`Got ${userTweets.length} Tweets from ${userName} (user ID ${userId})!`);
-};
-
-const getPage = async (params, options, nextToken) => {
-    if (nextToken) {
-        params.pagination_token = nextToken;
-    }
-
-    try {
-        const resp = await axios.get(url, {
-            params: params,
-            headers: options.headers
-        });
-
-        if (resp.status !== 200) {
-            console.log(`${resp.status} ${resp.statusText}:\n${resp.data}`);
-            return;
-        }
-        return resp.data;
-    } catch (err) {
-        throw new Error(`Request failed: ${err}`);
-    }
-};
-
-
-// export default async function handler(req, res) {
-//     const endpointURL = "https://api.twitter.com/2/tweets";
-//     const token = `AAAAAAAAAAAAAAAAAAAAAKuarQEAAAAALNNkPst0rg%2Bh6h39JbIzs1%2FDloA%3D2be163MetU2NPSSlvIS8AQtoujT7SfKAepzFdz4i9cNDl606sm`;
-//     const params = {
-//         ids: "1278747501642657792,1255542774432063488", // Edit Tweet IDs to look up
-//         "tweet.fields": "lang,author_id", // Edit optional query parameters here
-//         "user.fields": "created_at" // Edit optional query parameters here
-//     };
-
-//     try {
-//         const response = await axios.get(endpointURL, {
-//             params: params,
-//             headers: {
-//                 "User-Agent": "v2TweetLookupJS",
-//                 "Authorization": `Bearer ${token}`
-//             }
-//         });
-//         console.log(response);
-//         return response.data;
-//     } catch (error) {
-//         console.error('Error making request:', error);
-//         throw error;
-//     }
-// }
+}
 
 // export default async function handler(req, res) {
     
